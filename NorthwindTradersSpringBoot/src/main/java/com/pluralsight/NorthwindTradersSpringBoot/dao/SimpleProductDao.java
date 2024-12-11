@@ -13,7 +13,7 @@ public class SimpleProductDao implements ProductDao {
         this.products = new ArrayList<>();
         // Adding some initial products to the db
         products.add(new Product(1, "Unicorn Tears", "Mythical Beverages", 9.99));
-        products.add(new Product(2, "Mermaid's Kiss", "Mythical Beverages", 12.99));
+        products.add(new Product(2, "Fairy's Whisper", "Mythical Beverages", 12.99));
         products.add(new Product(3, "Dragon's Breath", "Mythical Beverages", 14.99));
         products.add(new Product(4, "Invisibility Cloak", "Magical Fashion", 49.99));
         products.add(new Product(5, "Wizard's Hat", "Magical Fashion", 29.99));

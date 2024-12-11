@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.pluralsight.NorthwindTradersSpringBoot.dao.SimpleProductDao;
 import com.pluralsight.NorthwindTradersSpringBoot.model.Product;
 import com.abdurraheem.utils.Console;
+import java.util.List; // Added import statement
 
 @SpringBootApplication
 public class NorthwindTradersSpringBootApplication implements CommandLineRunner {
@@ -46,11 +47,9 @@ public class NorthwindTradersSpringBootApplication implements CommandLineRunner 
 	private void handleUserSelection(char choice) {
 		switch (choice) {
 			case '1':
-				listProducts();
-				break;
+				listProducts(); break;
 			case '2':
-				addProduct();
-				break;
+				addProduct(); break;
 			case '3':
 				updateProduct();
 				break;
@@ -69,9 +68,22 @@ public class NorthwindTradersSpringBootApplication implements CommandLineRunner 
 	}
 
 	private void listProducts() {
-		System.out.println("Products:");
-		for (Product product : productDao.getAll()) {
-			System.out.println("ID: " + product.productId() + ", Name: " + product.name() + ", Category: " + product.category() + ", Price: " + product.price());
+		List<Product> products = productDao.getAll();
+		if (products.isEmpty()) {
+			System.out.println("No products found, database is empty!");
+			return;
+		}
+		// Print Header
+		System.out.printf("%n%-10s %-30s %-25s %-10s%n", "ID", "Name", "Category", "Price");
+		System.out.println("-".repeat(80));
+
+		// print rows
+		for (Product product : products) {
+			System.out.printf("%-10s %-30s %-25s %-10s%n",
+					product.productId(),
+					product.name(),
+					product.category(),
+					String.format("$%.2f", product.price()));
 		}
 	}
 
@@ -108,7 +120,15 @@ public class NorthwindTradersSpringBootApplication implements CommandLineRunner 
 		int searchId = Console.PromptForInt("Enter Product ID to search: ");
 		Product foundProduct = productDao.search(searchId);
 		if (foundProduct != null) {
-			System.out.println("Found Product: ID: " + foundProduct.productId() + ", Name: " + foundProduct.name() + ", Category: " + foundProduct.category() + ", Price: " + foundProduct.price());
+			// Print Header
+			System.out.printf("%n%-10s %-30s %-25s %-10s%n", "ID", "Name", "Category", "Price");
+			System.out.println("-".repeat(80));
+			// print product
+			System.out.printf("%n%-10s %-30s %-25s %-10s%n",
+					foundProduct.productId(),
+					foundProduct.name(),
+					foundProduct.category(),
+					String.format("$%.2f", foundProduct.price()));
 		} else {
 			System.out.println("Product not found.");
 		}
