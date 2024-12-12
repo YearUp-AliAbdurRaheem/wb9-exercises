@@ -66,11 +66,18 @@ public class NorthwindApplication implements CommandLineRunner {
             System.out.println("No products found, database is empty!");
             return;
         }
+
+        // Calculate the maximum length of product names, this is so the formatting works with super long names
+        int maxNameLength = products.stream()
+                .mapToInt(product -> product.productName().length())
+                .max()
+                .orElse(30); // Default is 30 if no products
+
         System.out.printf("%n%-10s %-30s %-25s %-10s%n", "ID", "Name", "Category", "Price");
         System.out.println("-".repeat(80));
 
         for (Product product : products) {
-            System.out.printf("%-10d %-30s %-25s $%-9.2f%n",
+            System.out.printf("%-10d %-" + (maxNameLength+2) + "s %-25s $%-9.2f%n",
                     product.productId(),
                     product.productName(),
                     product.categoryId(),
